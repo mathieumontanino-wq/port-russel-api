@@ -1,13 +1,16 @@
 /**
  * Fichier principal de l'application Express
- * Initialise l'application et les middlewares
  */
 
 const express = require("express");
+const connectDB = require("./config/database");
 
 const app = express();
 
-// Middleware permettant de lire le JSON dans les requêtes
+// connexion à MongoDB
+connectDB();
+
+// Middleware permettant de lire le JSON
 app.use(express.json());
 
 // Route de test
