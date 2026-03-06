@@ -1,0 +1,52 @@
+[
+{
+"catwayNumber": 1,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 2,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 3,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 4,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 5,
+"catwayType": "long",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 6,
+"catwayType": "short",
+"catwayState": "En cours de réparation. Ne peut être réservée actuellement"
+},
+{
+"catwayNumber": 7,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 8,
+"catwayType": "short",
+"catwayState": "bon état"
+},
+{
+"catwayNumber": 9,
+"catwayType": "long",
+"catwayState": "Plusieurs grandes tâches de peinture bleue sur le ponton"
+},
+{
+"catwayNumber": 10,
+"catwayType": "long",
+"catwayState": "bon état"
+}
+]
