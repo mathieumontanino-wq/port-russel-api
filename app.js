@@ -19,3 +19,7 @@ app.get("/", (req, res) => {
 });
 
 module.exports = app;
+
+const catwayRoutes = require("./routes/catwayRoutes");
+
+app.use("/catways", catwayRoutes);
