@@ -89,4 +89,23 @@ router.put("/catways/:id/reservations/:idReservation", async (req, res) => {
 
 });
 
+// DELETE supprimer une réservation
+router.delete("/catways/:id/reservations/:idReservation", async (req, res) => {
+
+  try {
+
+    const reservation = await Reservation.findByIdAndDelete(req.params.idReservation);
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Réservation non trouvée" });
+    }
+
+    res.json({ message: "Réservation supprimée avec succès" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+});
+
 module.exports = router;
