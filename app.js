@@ -10,8 +10,12 @@ const app = express();
 // connexion à MongoDB
 connectDB();
 
-// Middleware permettant de lire le JSON
+// Middleware JSON
 app.use(express.json());
+
+// Routes
+const catwayRoutes = require("./routes/catwayRoutes");
+app.use("/catways", catwayRoutes);
 
 // Route de test
 app.get("/", (req, res) => {
@@ -19,7 +23,3 @@ app.get("/", (req, res) => {
 });
 
 module.exports = app;
-
-const catwayRoutes = require("./routes/catwayRoutes");
-
-app.use("/catways", catwayRoutes);
