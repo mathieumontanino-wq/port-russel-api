@@ -15,7 +15,9 @@ app.use(express.json());
 
 // Routes
 const catwayRoutes = require("./routes/catwayRoutes");
+const reservationRoutes = require("./routes/reservationRoutes");
 app.use("/catways", catwayRoutes);
+app.use("/", reservationRoutes);
 
 // Route de test
 app.get("/", (req, res) => {
