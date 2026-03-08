@@ -44,4 +44,105 @@ router.post("/login", async (req, res) => {
 
 });
 
+router.get("/users", async (req, res) => {
+
+  try {
+
+    const users = await User.find();
+
+    res.json(users);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
+
+router.get("/users/:email", async (req, res) => {
+
+  try {
+
+    const user = await User.findOne({ email: req.params.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    res.json(user);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
+
+router.post("/users", async (req, res) => {
+
+  try {
+
+    const { username, email, password } = req.body;
+
+    const hash = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      email,
+      password: hash
+    });
+
+    await user.save();
+
+    res.status(201).json(user);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
+
+router.put("/users/:email", async (req, res) => {
+
+  try {
+
+    const user = await User.findOne({ email: req.params.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    user.username = req.body.username || user.username;
+
+    await user.save();
+
+    res.json(user);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
+
+router.delete("/users/:email", async (req, res) => {
+
+  try {
+
+    await User.findOneAndDelete({ email: req.params.email });
+
+    res.json({ message: "Utilisateur supprimé" });
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
 module.exports = router;
