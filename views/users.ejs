@@ -2,35 +2,51 @@
 <html>
 
 <head>
+
 <title>Utilisateurs</title>
 <link rel="stylesheet" href="/style.css">
+
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>Liste des Utilisateurs</h1>
 
-<table border="1">
+<table class="table">
+
+<thead>
 
 <tr>
 <th>Username</th>
 <th>Email</th>
 </tr>
 
+</thead>
+
+<tbody>
+
 <% users.forEach(user => { %>
 
 <tr>
+
 <td><%= user.username %></td>
 <td><%= user.email %></td>
+
 </tr>
 
 <% }) %>
+
+</tbody>
 
 </table>
 
 <br>
 
-<a href="/dashboard">Retour dashboard</a>
+<a class="back" href="/dashboard">Retour dashboard</a>
+
+</div>
 
 </body>
 

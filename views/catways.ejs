@@ -1,58 +1,183 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Catways</title>
-  <link rel="stylesheet" href="/style.css">
+
+<title>Catways</title>
+
+<link rel="stylesheet" href="/style.css">
+
 </head>
+
 <body>
+
+<div class="container">
 
 <h1>Liste des Catways</h1>
 
+
 <h2>Ajouter un Catway</h2>
 
-<form action="/catways" method="POST">
+<form id="catwayForm">
 
-<label>Numéro :</label>
-<input type="number" name="catwayNumber" required>
+<label>Numéro</label>
 
-<label>Type :</label>
-<select name="type">
-<option value="long">Long</option>
-<option value="short">Short</option>
+<select id="catwayNumber" required>
+
+<option value="">Choisir</option>
+
+<% for(let i=1;i<=20;i++){ %>
+<option value="<%= i %>"><%= i %></option>
+<% } %>
+
 </select>
 
-<label>Etat :</label>
-<input type="text" name="catwayState" required>
+
+<label>Type</label>
+
+<select id="catwayType">
+
+<option value="long">Long</option>
+<option value="short">Short</option>
+
+</select>
+
+
+<label>Etat</label>
+
+<select id="catwayState">
+
+<option value="Libre">Libre</option>
+<option value="Maintenance">Occupé</option>
+
+</select>
+
 
 <button type="submit">Ajouter</button>
 
 </form>
 
-<hr>
 
-<table border="1">
+<table class="table">
+
+<thead>
 
 <tr>
+
 <th>Numéro</th>
 <th>Type</th>
 <th>Etat</th>
+<th class="action">Action</th>
+
 </tr>
+
+</thead>
+
+<tbody>
 
 <% catways.forEach(catway => { %>
 
 <tr>
+
 <td><%= catway.catwayNumber %></td>
-<td><%= catway.type %></td>
-<td><%= catway.catwayState %></td>
+
+<td><%= catway.catwayType %></td>
+
+<td class="status">
+
+<% if(catway.catwayState === "Maintenance"){ %>
+
+<span class="badge maintenance">Occupé</span>
+
+<% } else { %>
+
+<span class="badge available">Libre</span>
+
+<% } %>
+
+</td>
+
+<td class="action">
+
+<button onclick="deleteCatway('<%= catway._id %>')" class="delete">
+Supprimer
+</button>
+
+</td>
+
 </tr>
 
 <% }) %>
+
+</tbody>
 
 </table>
 
 <br>
 
-<a href="/dashboard">Retour dashboard</a>
+<a class="back" href="/dashboard">Retour dashboard</a>
+
+</div>
+
+
+<script>
+
+async function deleteCatway(id){
+
+if(!confirm("Supprimer ce catway ?")) return
+
+await fetch("/catways/"+id,{
+method:"DELETE"
+})
+
+location.reload()
+
+}
+
+</script>
+
+
+<script>
+
+document.getElementById("catwayForm").addEventListener("submit", async function(e){
+
+e.preventDefault()
+
+const catwayNumber = document.getElementById("catwayNumber").value
+const catwayType = document.getElementById("catwayType").value
+const catwayState = document.getElementById("catwayState").value
+
+const response = await fetch("/catways",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+catwayNumber,
+catwayType,
+catwayState
+})
+
+})
+
+if(response.ok){
+
+location.reload()
+
+}
+else{
+
+alert("Ce numéro de catway existe déjà")
+
+}
+
+})
+
+</script>
 
 </body>
+
 </html>
