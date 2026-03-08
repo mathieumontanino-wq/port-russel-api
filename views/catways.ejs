@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Catways</title>
+</head>
+
+<body>
+
+<h1>Liste des Catways</h1>
+
+<table border="1">
+
+<tr>
+<th>Numéro</th>
+<th>Type</th>
+<th>Etat</th>
+</tr>
+
+<% catways.forEach(catway => { %>
+
+<tr>
+<td><%= catway.catwayNumber %></td>
+<td><%= catway.catwayType %></td>
+<td><%= catway.catwayState %></td>
+</tr>
+
+<% }) %>
+
+</table>
+
+<br>
+
+<a href="/dashboard">Retour dashboard</a>
+
+</body>
+
+</html>

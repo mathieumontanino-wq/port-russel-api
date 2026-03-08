@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Reservations</title>
+</head>
+
+<body>
+
+<h1>Liste des Réservations</h1>
+
+<table border="1">
+
+<tr>
+<th>Client</th>
+<th>Bateau</th>
+<th>Début</th>
+<th>Fin</th>
+</tr>
+
+<% reservations.forEach(res => { %>
+
+<tr>
+<td><%= res.clientName %></td>
+<td><%= res.boatName %></td>
+<td><%= res.startDate %></td>
+<td><%= res.endDate %></td>
+</tr>
+
+<% }) %>
+
+</table>
+
+<br>
+
+<a href="/dashboard">Retour dashboard</a>
+
+</body>
+
+</html>
