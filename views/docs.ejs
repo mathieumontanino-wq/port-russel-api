@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Documentation API</title>
+</head>
+
+<body>
+
+<h1>Documentation API Port Russel</h1>
+
+<h2>Authentification</h2>
+
+<p>POST /login</p>
+
+<pre>
+{
+ "email": "admin@port-russel.com",
+ "password": "admin123"
+}
+</pre>
+
+<h2>Catways</h2>
+
+<ul>
+<li>GET /catways</li>
+<li>GET /catways/:id</li>
+<li>POST /catways</li>
+<li>PUT /catways/:id</li>
+<li>DELETE /catways/:id</li>
+</ul>
+
+<h2>Reservations</h2>
+
+<ul>
+<li>GET /catways/:id/reservations</li>
+<li>POST /catways/:id/reservations</li>
+<li>PUT /catways/:id/reservations/:idReservation</li>
+<li>DELETE /catways/:id/reservations/:idReservation</li>
+</ul>
+
+<h2>Users</h2>
+
+<ul>
+<li>GET /users</li>
+<li>GET /users/:email</li>
+<li>POST /users</li>
+<li>PUT /users/:email</li>
+<li>DELETE /users/:email</li>
+</ul>
+
+<br>
+
+<a href="/">Retour accueil</a>
+
+</body>
+
+</html>

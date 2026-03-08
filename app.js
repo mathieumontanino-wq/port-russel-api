@@ -62,5 +62,8 @@ app.get("/users-page", async (req, res) => {
   res.render("users", { users });
 
 });
+app.get("/docs", (req, res) => {
+  res.render("docs");
+});
 
 module.exports = app;
