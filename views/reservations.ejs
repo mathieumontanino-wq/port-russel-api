@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 <title>Reservations</title>
+<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -18,13 +18,13 @@
 <th>Fin</th>
 </tr>
 
-<% reservations.forEach(res => { %>
+<% reservations.forEach(reservation => { %>
 
 <tr>
-<td><%= res.clientName %></td>
-<td><%= res.boatName %></td>
-<td><%= res.startDate %></td>
-<td><%= res.endDate %></td>
+<td><%= reservation.clientName %></td>
+<td><%= reservation.boatName %></td>
+<td><%= reservation.startDate %></td>
+<td><%= reservation.endDate %></td>
 </tr>
 
 <% }) %>
@@ -36,5 +36,4 @@
 <a href="/dashboard">Retour dashboard</a>
 
 </body>
-
 </html>

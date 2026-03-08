@@ -15,6 +15,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -27,6 +28,7 @@ const auth = require("./middleware/auth");
 const Catway = require("./models/catway");
 const Reservation = require("./models/reservation");
 const User = require("./models/user");
+const methodOverride = require("method-override");
 
 app.use("/", userRoutes);
 app.use("/catways", catwayRoutes);
