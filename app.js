@@ -29,15 +29,12 @@ const Reservation = require("./models/reservation");
 const User = require("./models/user");
 
 app.use("/", userRoutes);
-app.use("/catways", auth, catwayRoutes);
-app.use("/", auth, reservationRoutes);
+app.use("/catways", catwayRoutes);
+app.use("/catways", reservationRoutes);
 
 // Route de test
 app.get("/", (req, res) => {
   res.render("index");
-});
-app.get("/dashboard", (req, res) => {
-  res.render("dashboard");
 });
 app.get("/dashboard", (req, res) => {
   res.render("dashboard");

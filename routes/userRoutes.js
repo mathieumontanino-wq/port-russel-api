@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.redirect("/dashboard");
+    res.json({ token });
 
   } catch (error) {
 
