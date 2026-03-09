@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
 
-<title>Réservations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Réservations - Port Russel</title>
+
+<meta name="description" content="Gestion des réservations des catways du port Russel. Application de gestion portuaire permettant de créer, consulter et supprimer des réservations.">
+
 <link rel="stylesheet" href="/style.css">
 
 </head>
 
 <body>
 
-<%- include("partials/sidebar") %>    
-
-<div class="sidebar">
-
-<h2>PORT RUSSEL</h2>
-
-<ul>
-
-<li><a href="/dashboard">Dashboard</a></li>
-<li><a href="/catways-page">Catways</a></li>
-<li><a href="/reservations-page">Réservations</a></li>
-<li><a href="/users-page">Utilisateurs</a></li>
-<li><a href="/docs">Documentation</a></li>
-
-</ul>
-
-</div>
-
+<!-- MENU LATERAL -->
+<%- include("partials/sidebar") %>
 
 <div class="main-content">
 
@@ -83,9 +73,8 @@ Supprimer
 
 <label>Catway</label>
 
-<select id="catwayNumber">
-
-<option value="">Choisir</option>
+<select id="catwayNumber" required>
+<option value="" disabled selected>Choisir</option>
 
 <% for(let i=1;i<=20;i++){ %>
 <option value="<%= i %>"><%= i %></option>
@@ -138,9 +127,16 @@ document.getElementById("reservationForm").addEventListener("submit", async func
 
 e.preventDefault()
 
+const catway = document.getElementById("catwayNumber").value
+
+if(!catway){
+alert("Veuillez choisir un catway")
+return
+}
+
 const data = {
 
-catwayNumber: document.getElementById("catwayNumber").value,
+catwayNumber: catway,
 clientName: document.getElementById("clientName").value,
 boatName: document.getElementById("boatName").value,
 startDate: document.getElementById("startDate").value,

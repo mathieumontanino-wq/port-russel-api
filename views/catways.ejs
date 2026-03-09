@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
-<title>Catways</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Catways - Port Russel</title>
+
+<meta name="description" content="Gestion des catways du port Russel. Visualisation de l'état des catways libres ou occupés selon les réservations en cours.">
+
 <link rel="stylesheet" href="/style.css">
+
 </head>
 
 <body>
@@ -19,14 +27,11 @@
 <table class="table">
 
 <thead>
-
 <tr>
 <th>Numéro</th>
 <th>Type</th>
 <th>Etat</th>
-<th class="action">Action</th>
 </tr>
-
 </thead>
 
 <tbody>
@@ -36,11 +41,18 @@
 <tr>
 
 <td><%= catway.catwayNumber %></td>
-<td><%= catway.catwayType %></td>
+
+<td>
+<% if(catway.catwayType === "short"){ %>
+Court
+<% } else { %>
+Long
+<% } %>
+</td>
 
 <td class="status">
 
-<% if(catway.catwayState === "Maintenance"){ %>
+<% if(catway.reserved){ %>
 
 <span class="badge maintenance">Occupé</span>
 
@@ -49,14 +61,6 @@
 <span class="badge available">Libre</span>
 
 <% } %>
-
-</td>
-
-<td class="action">
-
-<button onclick="deleteCatway('<%= catway._id %>')" class="delete">
-Supprimer
-</button>
 
 </td>
 
@@ -71,22 +75,6 @@ Supprimer
 </div>
 
 </div>
-
-<script>
-
-async function deleteCatway(id){
-
-if(!confirm("Supprimer ce catway ?")) return
-
-await fetch("/catways/"+id,{
-method:"DELETE"
-})
-
-location.reload()
-
-}
-
-</script>
 
 </body>
 </html>

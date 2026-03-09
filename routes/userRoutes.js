@@ -45,7 +45,7 @@ router.get("/users", async (req, res) => {
 
   try {
 
-    const users = await User.find();
+    const users = await User.find().select("-password");
 
     res.json(users);
 
@@ -82,6 +82,12 @@ router.post("/users", async (req, res) => {
   try {
 
     const { username, email, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if(existingUser){
+      return res.status(400).json({ message: "Utilisateur déjà existant" });
+    }
 
     const hash = await bcrypt.hash(password, 10);
 
