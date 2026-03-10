@@ -28,6 +28,7 @@ app.set("views", "./views");
 
 
 // ROUTES API
+
 app.use("/", userRoutes);
 app.use("/catways", catwayRoutes);
 app.use("/reservations", reservationRoutes);
@@ -43,12 +44,42 @@ app.get("/dashboard", (req, res) => {
   res.render("dashboard");
 });
 
+
+/*
+PAGE CATWAYS
+Etat calculé automatiquement selon les réservations
+*/
+
 app.get("/catways-page", async (req, res) => {
 
   const catways = await Catway.find();
-  res.render("catways", { catways });
+  const reservations = await Reservation.find();
+
+  const today = new Date();
+
+  const catwaysWithStatus = catways.map(catway => {
+
+    const isReserved = reservations.some(res =>
+
+      res.catwayNumber == catway.catwayNumber &&
+      new Date(res.startDate) <= today &&
+      new Date(res.endDate) >= today
+
+    );
+
+    return {
+
+      ...catway.toObject(),
+      reserved: isReserved
+
+    };
+
+  });
+
+  res.render("catways", { catways: catwaysWithStatus });
 
 });
+
 
 app.get("/reservations-page", async (req, res) => {
 
@@ -57,6 +88,7 @@ app.get("/reservations-page", async (req, res) => {
 
 });
 
+
 app.get("/users-page", async (req, res) => {
 
   const users = await User.find();
@@ -64,8 +96,13 @@ app.get("/users-page", async (req, res) => {
 
 });
 
+
 app.get("/docs", (req, res) => {
   res.render("docs");
+});
+
+app.get("/login-page", (req, res) => {
+  res.render("login");
 });
 
 module.exports = app;

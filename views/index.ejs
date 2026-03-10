@@ -1,37 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
+<meta charset="UTF-8">
+
 <title>Port Russel</title>
+
+<meta name="description" content="Gestion des réservations des catways du port Russel. Application de gestion portuaire permettant de gérer les catways et les réservations.">
+
 <link rel="stylesheet" href="/style.css">
+
 </head>
 
 <body>
 
-<h1>Port de plaisance Russel</h1>
+<div class="home-wrapper">
 
-<h2>Connexion</h2>
+<header class="home-header">
+<h1>Bienvenue au Port de plaisance Russel</h1>
+<h2>Application de gestion portuaire</h2>
+</header>
 
-<form action="/login" method="POST">
+<section class="home-description">
 
+<h3>Présentation</h3>
+
+<p>
+Cette application permet à la capitainerie de gérer les emplacements
+<strong>catways</strong> ainsi que les réservations des bateaux dans le port.
+</p>
+
+<p>
+Grâce à cette interface, les agents peuvent consulter l’état du port,
+organiser les réservations et administrer les utilisateurs.
+</p>
+
+<h3>Fonctionnalités principales</h3>
+
+<ul>
+<li>Consultation des catways disponibles</li>
+<li>Gestion des réservations de bateaux</li>
+<li>Administration des utilisateurs</li>
+</ul>
+
+</section>
+
+<section class="login-section">
+
+<h2>Connexion à l'application</h2>
+
+<form id="loginForm" class="login-form">
+
+<div class="form-row">
 <label>Email</label>
-<input type="email" name="email" required>
+<input type="email" id="email" required>
+</div>
 
-<br><br>
-
+<div class="form-row">
 <label>Mot de passe</label>
-<input type="password" name="password" required>
-
-<br><br>
+<input type="password" id="password" required>
+</div>
 
 <button type="submit">Se connecter</button>
 
 </form>
 
-<br>
+<p id="result"></p>
 
-<a href="/docs">Documentation API</a>
+</section>
+
+<section class="doc-section">
+
+<a href="/docs">Consulter la documentation de l'API</a>
+
+</section>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+
+e.preventDefault()
+
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+
+const response = await fetch("/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({ email, password })
+
+})
+
+const data = await response.json()
+
+if(response.ok){
+
+localStorage.setItem("token",data.token)
+
+window.location="/dashboard"
+
+}else{
+
+document.getElementById("result").innerText=data.message
+
+}
+
+})
+
+</script>
 
 </body>
-
 </html>

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Catway = require("../models/catway");
+const Reservation = require("../models/reservation"); // ajouté
 
 
 // GET tous les catways (API)
@@ -69,6 +70,7 @@ res.status(500).json({error:error.message})
 
 })
 
+
 // PUT modifier un catway
 router.put("/:id", async (req, res) => {
 
@@ -99,7 +101,7 @@ router.delete("/:id", async (req, res) => {
     await Catway.findByIdAndDelete(req.params.id);
 
     // redirection vers la page EJS
-    res.redirect("/catways-page");
+    res.json({ message: "Catway supprimé" });
 
   } catch (error) {
 
@@ -108,5 +110,117 @@ router.delete("/:id", async (req, res) => {
   }
 
 });
+
+// GET toutes les réservations d'un catway
+router.get("/:id/reservations", async (req, res) => {
+
+  try {
+
+    const reservations = await Reservation.find({
+      catwayNumber: req.params.id
+    });
+
+    res.json(reservations);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+});
+
+
+// GET détail d'une réservation d'un catway
+router.get("/:id/reservations/:idReservation", async (req, res) => {
+
+  try {
+
+    const reservation = await Reservation.findById(
+      req.params.idReservation
+    );
+
+    res.json(reservation);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+});
+
+
+// POST créer une réservation pour un catway
+router.post("/:id/reservations", async (req, res) => {
+
+  try {
+
+    const reservation = new Reservation({
+
+      catwayNumber: req.params.id,
+      clientName: req.body.clientName,
+      boatName: req.body.boatName,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate
+
+    });
+
+    await reservation.save();
+
+    res.status(201).json(reservation);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+});
+
+
+// PUT modifier une réservation
+router.put("/:id/reservations/:idReservation", async (req, res) => {
+
+  try {
+
+    const updatedReservation = await Reservation.findByIdAndUpdate(
+
+      req.params.idReservation,
+      req.body,
+      { new: true }
+
+    );
+
+    res.json(updatedReservation);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+});
+
+
+// DELETE supprimer une réservation
+router.delete("/:id/reservations/:idReservation", async (req, res) => {
+
+  try {
+
+    await Reservation.findByIdAndDelete(
+      req.params.idReservation
+    );
+
+    res.json({ message: "Réservation supprimée" });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+});
+
 
 module.exports = router;

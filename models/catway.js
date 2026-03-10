@@ -1,17 +1,16 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const CatwaySchema = new mongoose.Schema({
+const catwaySchema = new mongoose.Schema({
 
 catwayNumber: {
 type: Number,
 required: true,
-min: 1,
 unique: true
 },
 
 catwayType: {
 type: String,
-enum: ["long","short"],
+enum: ["short", "long"],
 required: true
 },
 
@@ -20,6 +19,6 @@ type: String,
 required: true
 }
 
-})
+});
 
-module.exports = mongoose.model("Catway", CatwaySchema)
+module.exports = mongoose.model("Catway", catwaySchema);

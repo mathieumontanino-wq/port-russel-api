@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
-<title>Catways</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Catways - Port Russel</title>
+
+<meta name="description" content="Gestion des catways du port Russel. Visualisation de l'état des catways libres ou occupés selon les réservations en cours.">
+
 <link rel="stylesheet" href="/style.css">
+
 </head>
 
 <body>
@@ -19,28 +27,33 @@
 <table class="table">
 
 <thead>
-
 <tr>
 <th>Numéro</th>
 <th>Type</th>
 <th>Etat</th>
-<th class="action">Action</th>
+<th>Action</th>
 </tr>
-
 </thead>
 
-<tbody>
+<tbody id="catwayTable">
 
 <% catways.forEach(catway => { %>
 
-<tr>
+<tr id="catway-<%= catway._id %>">
 
 <td><%= catway.catwayNumber %></td>
-<td><%= catway.catwayType %></td>
+
+<td>
+<% if(catway.catwayType === "short"){ %>
+Court
+<% } else { %>
+Long
+<% } %>
+</td>
 
 <td class="status">
 
-<% if(catway.catwayState === "Maintenance"){ %>
+<% if(catway.reserved){ %>
 
 <span class="badge maintenance">Occupé</span>
 
@@ -52,7 +65,7 @@
 
 </td>
 
-<td class="action">
+<td>
 
 <button onclick="deleteCatway('<%= catway._id %>')" class="delete">
 Supprimer
@@ -68,9 +81,29 @@ Supprimer
 
 </table>
 
+
+<h2>Ajouter un catway</h2>
+
+<form id="catwayForm">
+
+<label>Numéro</label>
+<input type="number" id="catwayNumber" required>
+
+<label>Type</label>
+
+<select id="catwayType">
+<option value="short">Court</option>
+<option value="long">Long</option>
+</select>
+
+<button type="submit">Ajouter</button>
+
+</form>
+
 </div>
 
 </div>
+
 
 <script>
 
@@ -78,13 +111,77 @@ async function deleteCatway(id){
 
 if(!confirm("Supprimer ce catway ?")) return
 
-await fetch("/catways/"+id,{
-method:"DELETE"
+try{
+
+const response = await fetch(`/catways/${id}`, {
+method: "DELETE"
 })
+
+if(!response.ok){
+throw new Error("Erreur suppression")
+}
+
+document.getElementById("catway-"+id).remove()
+
+}catch(error){
+
+console.error(error)
+alert("Erreur lors de la suppression du catway")
+
+}
+
+}
+
+</script>
+
+
+<script>
+
+document.getElementById("catwayForm").addEventListener("submit", async function(e){
+
+e.preventDefault()
+
+const data = {
+
+catwayNumber: Number(document.getElementById("catwayNumber").value),
+catwayType: document.getElementById("catwayType").value,
+catwayState: "Libre"
+
+}
+
+try{
+
+const response = await fetch("/catways",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+
+if(response.ok){
 
 location.reload()
 
+}else{
+
+const error = await response.json()
+alert(error.error || "Impossible d'ajouter ce catway")
+
 }
+
+}catch(error){
+
+console.error(error)
+alert("Erreur serveur")
+
+}
+
+})
 
 </script>
 

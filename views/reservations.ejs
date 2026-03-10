@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
 
-<title>Réservations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Réservations - Port Russel</title>
+
+<meta name="description" content="Gestion des réservations des catways du port Russel. Application de gestion portuaire permettant de créer, consulter et supprimer des réservations.">
+
 <link rel="stylesheet" href="/style.css">
 
 </head>
 
 <body>
 
-<%- include("partials/sidebar") %>    
-
-<div class="sidebar">
-
-<h2>PORT RUSSEL</h2>
-
-<ul>
-
-<li><a href="/dashboard">Dashboard</a></li>
-<li><a href="/catways-page">Catways</a></li>
-<li><a href="/reservations-page">Réservations</a></li>
-<li><a href="/users-page">Utilisateurs</a></li>
-<li><a href="/docs">Documentation</a></li>
-
-</ul>
-
-</div>
-
+<!-- MENU LATERAL -->
+<%- include("partials/sidebar") %>
 
 <div class="main-content">
 
@@ -62,6 +52,16 @@
 
 <td>
 
+<button onclick="showEditForm(
+'<%= reservation._id %>',
+'<%= reservation.clientName %>',
+'<%= reservation.boatName %>',
+'<%= reservation.startDate.toISOString().substring(0,10) %>',
+'<%= reservation.endDate.toISOString().substring(0,10) %>'
+)" class="edit">
+Modifier
+</button>
+
 <button onclick="deleteReservation('<%= reservation._id %>')" class="delete">
 Supprimer
 </button>
@@ -76,6 +76,29 @@ Supprimer
 
 </table>
 
+<!-- FORMULAIRE MODIFICATION -->
+
+<h2>Modifier une réservation</h2>
+
+<form id="editForm" style="display:none">
+
+<input type="hidden" id="editId">
+
+<label>Client</label>
+<input type="text" id="editClient" required>
+
+<label>Bateau</label>
+<input type="text" id="editBoat" required>
+
+<label>Début</label>
+<input type="date" id="editStart" required>
+
+<label>Fin</label>
+<input type="date" id="editEnd" required>
+
+<button type="submit">Modifier</button>
+
+</form>
 
 <h2>Ajouter une réservation</h2>
 
@@ -83,16 +106,14 @@ Supprimer
 
 <label>Catway</label>
 
-<select id="catwayNumber">
-
-<option value="">Choisir</option>
+<select id="catwayNumber" required>
+<option value="" disabled selected>Choisir</option>
 
 <% for(let i=1;i<=20;i++){ %>
 <option value="<%= i %>"><%= i %></option>
 <% } %>
 
 </select>
-
 
 <label>Client</label>
 <input type="text" id="clientName" required>
@@ -114,7 +135,6 @@ Supprimer
 
 </div>
 
-
 <script>
 
 async function deleteReservation(id){
@@ -131,6 +151,52 @@ location.reload()
 
 </script>
 
+<script>
+
+function showEditForm(id,client,boat,start,end){
+
+document.getElementById("editForm").style.display="block"
+
+document.getElementById("editId").value=id
+document.getElementById("editClient").value=client
+document.getElementById("editBoat").value=boat
+document.getElementById("editStart").value=start
+document.getElementById("editEnd").value=end
+
+}
+
+document.getElementById("editForm").addEventListener("submit", async function(e){
+
+e.preventDefault()
+
+const id=document.getElementById("editId").value
+
+const data={
+
+clientName:document.getElementById("editClient").value,
+boatName:document.getElementById("editBoat").value,
+startDate:document.getElementById("editStart").value,
+endDate:document.getElementById("editEnd").value
+
+}
+
+await fetch("/reservations/"+id,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+
+location.reload()
+
+})
+
+</script>
 
 <script>
 
@@ -138,17 +204,24 @@ document.getElementById("reservationForm").addEventListener("submit", async func
 
 e.preventDefault()
 
-const data = {
+const catway=document.getElementById("catwayNumber").value
 
-catwayNumber: document.getElementById("catwayNumber").value,
-clientName: document.getElementById("clientName").value,
-boatName: document.getElementById("boatName").value,
-startDate: document.getElementById("startDate").value,
-endDate: document.getElementById("endDate").value
+if(!catway){
+alert("Veuillez choisir un catway")
+return
+}
+
+const data={
+
+catwayNumber:catway,
+clientName:document.getElementById("clientName").value,
+boatName:document.getElementById("boatName").value,
+startDate:document.getElementById("startDate").value,
+endDate:document.getElementById("endDate").value
 
 }
 
-const response = await fetch("/reservations",{
+const response=await fetch("/reservations",{
 
 method:"POST",
 
