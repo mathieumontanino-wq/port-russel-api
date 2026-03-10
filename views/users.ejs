@@ -23,6 +23,7 @@
 <tr>
 <th>Username</th>
 <th>Email</th>
+<th>Action</th>
 </tr>
 
 </thead>
@@ -36,6 +37,18 @@
 <td><%= user.username %></td>
 <td><%= user.email %></td>
 
+<td>
+
+<button onclick="editUser('<%= user.email %>','<%= user.username %>')" class="edit">
+Modifier
+</button>
+
+<button onclick="deleteUser('<%= user.email %>')" class="delete">
+Supprimer
+</button>
+
+</td>
+
 </tr>
 
 <% }) %>
@@ -44,9 +57,106 @@
 
 </table>
 
+
+<h2>Ajouter / Modifier un utilisateur</h2>
+
+<form id="userForm">
+
+<label>Username</label>
+<input type="text" id="username" required>
+
+<label>Email</label>
+<input type="email" id="email" required>
+
+<label>Password</label>
+<input type="password" id="password">
+
+<button type="submit">Enregistrer</button>
+
+</form>
+
 </div>
 
 </div>
+
+
+<script>
+
+let editMode = false
+let currentEmail = null
+
+
+function editUser(email,username){
+
+document.getElementById("username").value = username
+document.getElementById("email").value = email
+
+currentEmail = email
+editMode = true
+
+}
+
+
+async function deleteUser(email){
+
+if(!confirm("Supprimer cet utilisateur ?")) return
+
+await fetch("/users/"+email,{
+method:"DELETE"
+})
+
+location.reload()
+
+}
+
+
+document.getElementById("userForm").addEventListener("submit", async function(e){
+
+e.preventDefault()
+
+const data = {
+
+username: document.getElementById("username").value,
+email: document.getElementById("email").value,
+password: document.getElementById("password").value
+
+}
+
+if(editMode){
+
+await fetch("/users/"+currentEmail,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+
+}else{
+
+await fetch("/users",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+
+}
+
+location.reload()
+
+})
+
+</script>
 
 </body>
 </html>

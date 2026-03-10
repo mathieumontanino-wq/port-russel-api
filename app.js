@@ -101,5 +101,8 @@ app.get("/docs", (req, res) => {
   res.render("docs");
 });
 
+app.get("/login-page", (req, res) => {
+  res.render("login");
+});
 
 module.exports = app;

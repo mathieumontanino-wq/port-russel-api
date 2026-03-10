@@ -147,5 +147,11 @@ router.delete("/users/:email", async (req, res) => {
 
   }
 
+router.get("/logout", (req, res) => {
+
+  res.json({ message: "Déconnexion réussie" });
+
+}); 
+
 });
 module.exports = router;

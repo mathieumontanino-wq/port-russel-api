@@ -15,47 +15,237 @@
 
 <div class="container">
 
-<h1>Documentation API Port Russel</h1>
+<h1>Documentation API - Port de plaisance Russel</h1>
+
+<p>Cette API permet de gérer les catways (places d'amarrage), les réservations et les utilisateurs de la capitainerie.</p>
+
+<hr>
 
 <h2>Authentification</h2>
 
-<p>POST /login</p>
+<h3>POST /login</h3>
+
+<p>Permet à un utilisateur de se connecter et d'obtenir un token JWT.</p>
+
+<b>Body :</b>
 
 <pre>
 {
- "email": "admin@port-russel.com",
- "password": "admin123"
+  "email": "admin@port-russel.com",
+  "password": "admin123"
 }
 </pre>
 
+<b>Réponse :</b>
+
+<pre>
+{
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+</pre>
+
+<hr>
+
+<h2>Utilisateurs</h2>
+
+<h3>GET /users</h3>
+
+<p>Retourne la liste de tous les utilisateurs.</p>
+
+<b>Réponse :</b>
+
+<pre>
+[
+ {
+   "_id": "12345",
+   "username": "admin",
+   "email": "admin@port-russel.com"
+ }
+]
+</pre>
+
+---
+
+<h3>GET /users/:email</h3>
+
+<p>Retourne les informations d'un utilisateur.</p>
+
+<b>Exemple :</b>
+
+<pre>
+GET /users/admin@port-russel.com
+</pre>
+
+---
+
+<h3>POST /users</h3>
+
+<p>Permet de créer un nouvel utilisateur.</p>
+
+<b>Body :</b>
+
+<pre>
+{
+  "username": "admin",
+  "email": "admin@port-russel.com",
+  "password": "admin123"
+}
+</pre>
+
+---
+
+<h3>PUT /users/:email</h3>
+
+<p>Permet de modifier le nom d'utilisateur.</p>
+
+<b>Body :</b>
+
+<pre>
+{
+  "username": "nouveauNom"
+}
+</pre>
+
+---
+
+<h3>DELETE /users/:email</h3>
+
+<p>Permet de supprimer un utilisateur.</p>
+
+---
+
+<hr>
+
 <h2>Catways</h2>
 
-<ul>
-<li>GET /catways</li>
-<li>GET /catways/:id</li>
-<li>POST /catways</li>
-<li>PUT /catways/:id</li>
-<li>DELETE /catways/:id</li>
-</ul>
+<h3>GET /catways</h3>
 
-<h2>Reservations</h2>
+<p>Retourne la liste de tous les catways.</p>
 
-<ul>
-<li>GET /catways/:id/reservations</li>
-<li>POST /catways/:id/reservations</li>
-<li>PUT /catways/:id/reservations/:idReservation</li>
-<li>DELETE /catways/:id/reservations/:idReservation</li>
-</ul>
+<b>Réponse :</b>
 
-<h2>Users</h2>
+<pre>
+[
+ {
+   "_id": "123",
+   "catwayNumber": 1,
+   "catwayType": "short",
+   "catwayState": "bon état"
+ }
+]
+</pre>
 
-<ul>
-<li>GET /users</li>
-<li>GET /users/:email</li>
-<li>POST /users</li>
-<li>PUT /users/:email</li>
-<li>DELETE /users/:email</li>
-</ul>
+---
+
+<h3>GET /catways/:id</h3>
+
+<p>Retourne les informations d'un catway spécifique.</p>
+
+<b>Exemple :</b>
+
+<pre>
+GET /catways/123
+</pre>
+
+---
+
+<h3>POST /catways</h3>
+
+<p>Permet de créer un nouveau catway.</p>
+
+<b>Body :</b>
+
+<pre>
+{
+  "catwayNumber": 10,
+  "catwayType": "long",
+  "catwayState": "bon état"
+}
+</pre>
+
+---
+
+<h3>PUT /catways/:id</h3>
+
+<p>Permet de modifier l'état d'un catway.</p>
+
+<b>Body :</b>
+
+<pre>
+{
+  "catwayState": "en maintenance"
+}
+</pre>
+
+---
+
+<h3>DELETE /catways/:id</h3>
+
+<p>Permet de supprimer un catway.</p>
+
+---
+
+<hr>
+
+<h2>Réservations</h2>
+
+<h3>GET /reservations</h3>
+
+<p>Retourne la liste des réservations.</p>
+
+<b>Réponse :</b>
+
+<pre>
+[
+ {
+   "_id": "123",
+   "catwayNumber": 1,
+   "clientName": "Jean Dupont",
+   "boatName": "Océan",
+   "startDate": "2024-06-01",
+   "endDate": "2024-06-10"
+ }
+]
+</pre>
+
+---
+
+<h3>POST /reservations</h3>
+
+<p>Créer une nouvelle réservation.</p>
+
+<b>Body :</b>
+
+<pre>
+{
+  "catwayNumber": 2,
+  "clientName": "Jean Dupont",
+  "boatName": "Océan",
+  "startDate": "2024-06-01",
+  "endDate": "2024-06-10"
+}
+</pre>
+
+---
+
+<h3>DELETE /reservations/:id</h3>
+
+<p>Supprime une réservation.</p>
+
+<b>Exemple :</b>
+
+<pre>
+DELETE /reservations/123
+</pre>
+
+<hr>
+
+<h2>Informations</h2>
+
+<p>Base de données : MongoDB</p>
+<p>Framework serveur : Express.js</p>
+<p>Authentification : JWT + bcrypt</p>
+<p>Moteur de template : EJS</p>
 
 </div>
 
